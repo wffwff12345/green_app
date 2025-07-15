@@ -36,7 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnHttpCallback, LocationListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnHttpCallback {
     private Button start;
     private Button finish;
 
@@ -141,49 +141,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onLocationChanged(@NonNull android.location.Location location) {
-        // 获取当前纬度
-        latitude = location.getLatitude();
-        // 获取当前经度
-        longitude = location.getLongitude();
-        // 定义位置解析
-        Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-        try {
-            // 获取经纬度对于的位置
-            // getFromLocation(纬度, 经度, 最多获取的位置数量)
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            // 得到第一个经纬度位置解析信息
-            Address address = addresses.get(0);
-            // 获取到详细的当前位置
-            // Address里面还有很多方法你们可以自行实现去尝试。比如具体省的名称、市的名称...
-            String info = address.getAddressLine(0) + // 获取国家名称
-                    address.getAddressLine(1) + // 获取省市县(区)
-                    address.getAddressLine(2);  // 获取镇号(地址名称)
-            // 赋值
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // 移除位置管理器
-        // 需要一直获取位置信息可以去掉这个
-        // locationManager.removeUpdates(this);
-    }
-
-    // 当前定位提供者状态
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.e("onStatusChanged", provider);
-    }
-
-    // 任意定位提高者启动执行
-    @Override
-    public void onProviderEnabled(@NonNull String provider) {
-        Log.e("onProviderEnabled", provider);
-    }
-
-    // 任意定位提高者关闭执行
-    @Override
-    public void onProviderDisabled(@NonNull String provider) {
-        Log.e("onProviderDisabled", provider);
-    }
 }
